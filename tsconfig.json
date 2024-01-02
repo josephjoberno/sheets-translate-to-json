@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "es6", // Version de ECMAScript cible pour la compilation
+        "module": "commonjs", // Style de module
+        "declaration": true, // Génère des fichiers .d.ts pour le typage
+        "outDir": "./lib", // Dossier de sortie pour les fichiers compilés
+        "strict": true, // Active le mode strict
+        "esModuleInterop": true, // Permet l'interopérabilité des modules ES6
+        "skipLibCheck": true // Ignore la vérification des types pour les fichiers de déclaration des bibliothèques
+    },
+    "include": ["."], // Spécifie les dossiers à inclure dans la compilation
+    "exclude": ["node_modules", "lib"] // Exclut certains dossiers
+}

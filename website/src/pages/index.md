@@ -5,7 +5,7 @@ slug: /
 ---
 
 <div class="text--center">
-    <img src="/img/sheets-translate-to-json.png" alt="Alternate description" />
+    <img src="img/sheets-translate-to-json.png" alt="Alternate description" />
 </div>
 
 **sheets-translate-to-json** is a library designed to simplify interactions with Google Sheets in Node.js applications. It provides a smooth and powerful interface for reading and writing data in spreadsheets, making data management more intuitive and less tedious.

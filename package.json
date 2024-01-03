@@ -1,6 +1,6 @@
 {
   "name": "sheets-translate-to-json",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Node.js library that facilitates the retrieval and conversion of previously translated Google Sheets spreadsheets into structured JSON files, optimizing the management of localized resources.",
   "scripts": {
     "build": "tsup",
@@ -27,7 +27,11 @@
     "translate",
     "translate-spreadsheet",
     "translate-sheets",
-    "translate-google-sheets"
+    "translate-google-sheets",
+    "i18n",
+    "i18n-sheets",
+    "i18n-google-sheets",
+    "i18n-spreadsheet"
   ],
   "devDependencies": {
     "@types/google-spreadsheet": "^4.0.0",

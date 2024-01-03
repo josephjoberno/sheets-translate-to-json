@@ -9,6 +9,16 @@ sidebar_position: 3
 
 To start using `sheets-translate-to-json`, you first need to create an instance of the `SheetManager` class.
 
+### Import esm & commonJs
+
+``` javascript 
+//CommonJs
+const SheetManager = require('sheets-translate-to-json').SheetManager;
+or
+//ES6(ESM)
+import { SheetManager } from 'sheets-translate-to-json';
+```
+
 ### Constructor
 
 ```javascript
@@ -106,8 +116,6 @@ manager.read()
 
 In this scenario, `read` is used to retrieve the data from the spreadsheet, and after any potential data processing, `write` is used to write this data into local JSON files.
 
-
-
 ---
 
 ### Result of Executing the SheetManager Script
@@ -115,5 +123,7 @@ In this scenario, `read` is used to retrieve the data from the spreadsheet, and 
 After running the `SheetManager` script, the following folder is created with the generated JSON files:
 
 ![Folder with JSON files](/img/result-translations.png)
+
+![exemple translate json ](/img/exemple-translate-json.png)
 
 ---

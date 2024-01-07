@@ -13,8 +13,12 @@ To start using `sheets-translate-to-json`, you first need to create an instance 
 
 ``` javascript 
 //CommonJs
-const SheetManager = require('sheets-translate-to-json').SheetManager;
+const {SheetManager} = require('sheets-translate-to-json');
+```
+
 or
+
+``` javascript
 //ES6(ESM)
 import { SheetManager } from 'sheets-translate-to-json';
 ```
@@ -38,12 +42,12 @@ const manager = new SheetManager(privateKey, clientEmail, sheetId);
 Initializes the connection to the spreadsheet and writes data to a specified path.
 
 ```javascript
-manager.init(userPath);
+manager.init(directory);
 ```
 
 | Parameter | Type   | Description                                  |
 |-----------|--------|----------------------------------------------|
-| userPath  | String | The path of the folder where to write data.  |
+| directory  | String | The path of the folder where to write data.  |
 
 ### read (async)
 
@@ -64,13 +68,13 @@ manager.read(sheetPosition).then(data => {
 Writes data to a JSON file in the specified path.
 
 ```javascript
-manager.write(data, directoryPath);
+manager.write(data, directory);
 ```
 
 | Parameter    | Type   | Description                                      |
 |--------------|--------|--------------------------------------------------|
 | data         | Object | The data to write.                               |
-| directoryPath| String | The path of the folder where to write JSON files.|
+| directory| String | The path of the folder where to write JSON files.|
 
 ## Examples of Using SheetManager
 
@@ -82,10 +86,10 @@ The `init` method of `SheetManager` automates the process of reading data from t
 const manager = new SheetManager(privateKey, clientEmail, sheetId);
 
 // Path where JSON files will be saved
-const userPath = './translations';
+const directory = './translations';
 
 // Initialization and automatic processing
-manager.init(userPath)
+manager.init(directory)
   .then(() => console.log('Data successfully read and written.'))
   .catch(err => console.error('Error during initialization:', err));
 ```
@@ -106,9 +110,9 @@ manager.read()
     // Data processing or manipulation here if needed
 
     // Path where JSON files will be saved
-    const directoryPath = './translations';
+    const directory = './translations';
     // Writing data into JSON files
-    manager.write(data, directoryPath);
+    manager.write(data, directory);
     console.log('Data written into JSON files.');
   })
   .catch(err => console.error('Error during reading:', err));
@@ -117,6 +121,36 @@ manager.read()
 In this scenario, `read` is used to retrieve the data from the spreadsheet, and after any potential data processing, `write` is used to write this data into local JSON files.
 
 ---
+
+### Running Your Script in JavaScript
+
+- **Using Node.js:**
+  - Make sure Node.js is installed on your machine. You can check this by running `node -v` in the terminal, which should display the version of Node.js.
+  - To execute your JavaScript script, use the `node` command followed by the name of your file. For example:
+
+```bash
+node your_file_name.js
+```
+
+- This command will execute the JavaScript script using the Node.js environment.
+
+### Running Your Script in TypeScript
+
+- **Using TS-Node:**
+  - TS-Node is a TypeScript executor for Node.js. It allows you to run TypeScript scripts directly without needing to transpile them into JavaScript first.
+  - If you don't have TS-Node installed yet, you can install it globally via NPM:
+
+```bash
+npm install -g ts-node
+```
+
+- Once TS-Node is installed, you can directly execute your TypeScript script. Use the `ts-node` command followed by the name of your file. For example:
+  
+```bash
+ts-node your_file_name.ts
+```
+
+- This command will execute the TypeScript script by transpiling it "on the fly" into JavaScript and then running it in the Node.js environment.
 
 ### Result of Executing the SheetManager Script
 

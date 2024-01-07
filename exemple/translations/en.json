@@ -1,0 +1,8 @@
+{
+  "login": "login",
+  "signup": "signup",
+  "product": {
+    "add": "add product",
+    "name ": "name of product"
+  }
+}

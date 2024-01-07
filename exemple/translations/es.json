@@ -1,0 +1,8 @@
+{
+  "login": "acceso",
+  "signup": "inscribirse",
+  "product": {
+    "add": "Agregar producto",
+    "name ": "nombre del producto"
+  }
+}

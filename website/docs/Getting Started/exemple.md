@@ -8,7 +8,7 @@ sidebar_position: 4
 
 For your convenience, an example file demonstrating the usage of `sheets-translate-to-json` is available in the repository. This example will guide you through the basic setup and usage of the library, helping you to get started quickly. You can find this example file at:
 
-[GitHub Repository Example](https://github.com/josephjoberno/sheets-translate-to-json/example)
+[GitHub Repository Example](https://github.com/josephjoberno/sheets-translate-to-json/tree/main/exemple)
 
 Please feel free to explore this example to better understand how to integrate `sheets-translate-to-json` into your project.
 

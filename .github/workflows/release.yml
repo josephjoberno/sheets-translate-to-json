@@ -1,0 +1,33 @@
+name: Release on npm
+on:
+  push:
+    branches:
+      - main
+    
+jobs:
+  build_and_publish:
+    runs-on: ubuntu-latest   
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+     
+      - name: Install dependencies
+        run: npm install 
+      - name: Initialize NPM config
+        run: npm config set //registry.npmjs.org/:_authToken ${{ secrets.NPM_TOKEN }}
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Config github credentials
+        run: |
+              git config --global user.email "josephjoberno@gmail.com"
+              git config --global user.name "josephjoberno"
+      - name: Create release
+        run: npm run release --ci
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          # Add following line if you are publishing to npm
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+        

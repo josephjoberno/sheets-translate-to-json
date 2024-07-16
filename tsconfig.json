@@ -6,7 +6,8 @@
         "outDir": "./lib", // Dossier de sortie pour les fichiers compilés
         "strict": true, // Active le mode strict
         "esModuleInterop": true, // Permet l'interopérabilité des modules ES6
-        "skipLibCheck": true // Ignore la vérification des types pour les fichiers de déclaration des bibliothèques
+        "skipLibCheck": true, // Ignore la vérification des types pour les fichiers de déclaration des bibliothèques
+        "strictNullChecks": true
     },
     "include": ["."], // Spécifie les dossiers à inclure dans la compilation
     "exclude": ["node_modules", "lib"] // Exclut certains dossiers

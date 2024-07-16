@@ -3,8 +3,12 @@ import { JWT } from "google-auth-library";
 import fs from "fs";
 import path from "path";
 
-interface GenericObject {
-  [key: string]: any;
+interface NestedObject {
+  [key: string]: string | NestedObject | undefined;
+}
+
+interface SheetData {
+  [key: string]: NestedObject;
 }
 
 export class SheetManager {
@@ -34,7 +38,7 @@ export class SheetManager {
     await this.jwt.authorize();
     this.read()
       .then((data) => {
-        if (!data) {
+        if (data!==null || data !== undefined) {
           console.error("No data found in the sheet");
           return;
         }
@@ -45,14 +49,9 @@ export class SheetManager {
       });
   }
 
-  /**
-   * 
-   * @param {number} sheetPosition  the position of the sheet in the spreadsheet (0 is the first sheet)
-   * @returns 
-   */
-  async read(sheetPosition:number=0): Promise<any> {
-    if(sheetPosition < 0){
-      sheetPosition = 0
+  async read(sheetPosition: number = 0): Promise<SheetData> {
+    if (sheetPosition < 0) {
+      sheetPosition = 0;
     }
     await this.doc.loadInfo();
     const sheet = this.doc.sheetsByIndex[sheetPosition];
@@ -60,31 +59,25 @@ export class SheetManager {
     const colTitles = sheet.headerValues;
     const rows = await sheet.getRows({ limit: sheet.rowCount });
 
-    let result: GenericObject = {};
+    const result: SheetData = {};
     rows.forEach((row) => {
       colTitles.slice(1).forEach((title) => {
-        //@ts-ignore
-        result[title] = result[title] || [];
         const key = row.get(colTitles[0]);
+        const value = row.get(title) !== "" ? row.get(title) : undefined;
+
+        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
         if (key.includes(".")) {
           const keys = key.split(".");
-          result = {
-            ...result,
-            [title]: {
-              ...result[title],
-              [keys[0]]: {
-                ...result[title][keys[0]],
-                [keys[1]]: row.get(title) !== "" ? row.get(title) : undefined,
-              },
-            },
+          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+          result[title] = result[title] || {};
+          result[title][keys[0]] = {
+            ...(result[title][keys[0]] as NestedObject),
+            [keys[1]]: value,
           };
         } else {
-          result = {
-            ...result,
-            [title]: {
-              ...result[title],
-              [key]: row.get(title) !== "" ? row.get(title) : undefined,
-            },
+          result[title] = {
+            ...result[title],
+            [key]: value,
           };
         }
       });
@@ -93,7 +86,7 @@ export class SheetManager {
     return result;
   }
 
-  write(data: any, directoryPath: string): void {
+  write(data: SheetData, directoryPath: string): void {
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: true });
     }

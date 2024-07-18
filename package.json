@@ -1,7 +1,10 @@
 {
   "name": "sheets-translate-to-json",
   "version": "1.0.2",
+<<<<<<< HEAD
   "type": "module",
+=======
+>>>>>>> df49bc9 (Add Babel for transpilation support)
   "description": "A Node.js library that facilitates the retrieval and conversion of previously translated Google Sheets spreadsheets into structured JSON files, optimizing the management of localized resources.",
   "scripts": {
     "test": "jest",
@@ -52,7 +55,12 @@
     "eslint": "^9.7.0",
     "jest": "^29.7.0",
     "release-it-pnpm": "^4.6.2",
-    "ts-jest": "^29.2.2"
+    "ts-jest": "^29.2.2",
+    "@babel/preset-typescript": "^7.24.7",
+    "babel-jest": "^29.7.0",
+    "@babel/core": "^7.24.9",
+    "@babel/preset-env": "^7.24.8",
+    "ts-node": "^10.9.2"
   },
   "dependencies": {
     "google-auth-library": "~9.4.1",

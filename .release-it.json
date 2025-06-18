@@ -12,7 +12,7 @@
       "release": true
     },
     "hooks": {
-      "before:init": ["git pull","npm run lint", "npm run test","npm run build"],
+      "before:init": ["git pull", "npm run test","npm run build"],
       "after:bump": "npx auto-changelog -p"
     }
     

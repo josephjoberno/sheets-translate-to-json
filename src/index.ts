@@ -34,19 +34,32 @@ export class SheetManager {
     this.doc = new GoogleSpreadsheet(sheetId, this.jwt);    
   }
 
-  async init(userPath: string) {
-    await this.jwt.authorize();
-    this.read()
-      .then((data) => {
-        if (data!==null || data !== undefined) {
-          console.error("No data found in the sheet");
-          return;
+  async init(userPath: string, sheetNames?: string[]) {
+    try {
+      await this.jwt.authorize();
+      
+      if (sheetNames && sheetNames.length > 0) {
+        // Traiter plusieurs feuilles spécifiques
+        for (const sheetName of sheetNames) {
+          const data = await this.readByName(sheetName);
+          if (data && Object.keys(data).length > 0) {
+            this.write(data, userPath, sheetName);
+          } else {
+            console.warn(`No data found in sheet: ${sheetName}`);
+          }
         }
-        this.write(data, userPath);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+      } else {
+        // Traiter toutes les feuilles
+        const data = await this.read();
+        if (data && Object.keys(data).length > 0) {
+          this.write(data, userPath);
+        } else {
+          console.error("No data found in the sheet");
+        }
+      }
+    } catch (err) {
+      console.error("Error during initialization:", err);
+    }
   }
 
   async read(sheetPosition: number = 0): Promise<SheetData> {
@@ -55,30 +68,69 @@ export class SheetManager {
     }
     await this.doc.loadInfo();
     const sheet = this.doc.sheetsByIndex[sheetPosition];
+    return this.processSheet(sheet);
+  }
+
+  async readByName(sheetName: string): Promise<SheetData> {
+    await this.doc.loadInfo();
+    const sheet = this.doc.sheetsByTitle[sheetName];
+    
+    if (!sheet) {
+      throw new Error(`Sheet with name "${sheetName}" not found`);
+    }
+    
+    return this.processSheet(sheet);
+  }
+
+  async readAllSheets(): Promise<{ [sheetName: string]: SheetData }> {
+    await this.doc.loadInfo();
+    const allData: { [sheetName: string]: SheetData } = {};
+    
+    for (const sheet of this.doc.sheetsByIndex) {
+      try {
+        const data = await this.processSheet(sheet);
+        if (data && Object.keys(data).length > 0) {
+          allData[sheet.title] = data;
+        }
+      } catch (error) {
+        console.error(`Error processing sheet "${sheet.title}":`, error);
+      }
+    }
+    
+    return allData;
+  }
+
+  private async processSheet(sheet: any): Promise<SheetData> {
     await sheet.loadHeaderRow();
     const colTitles = sheet.headerValues;
     const rows = await sheet.getRows({ limit: sheet.rowCount });
 
     const result: SheetData = {};
-    rows.forEach((row) => {
-      colTitles.slice(1).forEach((title) => {
-        const key = row.get(colTitles[0]);
-        const value = row.get(title) !== "" ? row.get(title) : undefined;
+    
+    rows.forEach((row: any) => {
+      // Vérifier si la ligne n'est pas vide
+      const keyValue = row.get(colTitles[0]);
+      
+      // Ignorer les lignes vides ou avec une clé vide/undefined
+      if (!keyValue || keyValue.trim() === '') {
+        return;
+      }
 
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+      colTitles.slice(1).forEach((title: string) => {
+        const key = keyValue.trim();
+        const value = row.get(title);
+        const cleanValue = value && value.trim() !== '' ? value.trim() : undefined;
+
+        // Initialiser la structure pour cette colonne si elle n'existe pas
+        if (!result[title]) {
+          result[title] = {};
+        }
+
+        // Gérer les clés imbriquées avec support de plusieurs niveaux
         if (key.includes(".")) {
-          const keys = key.split(".");
-          // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-          result[title] = result[title] || {};
-          result[title][keys[0]] = {
-            ...(result[title][keys[0]] as NestedObject),
-            [keys[1]]: value,
-          };
+          this.setNestedValue(result[title] as NestedObject, key, cleanValue);
         } else {
-          result[title] = {
-            ...result[title],
-            [key]: value,
-          };
+          (result[title] as NestedObject)[key] = cleanValue;
         }
       });
     });
@@ -86,20 +138,48 @@ export class SheetManager {
     return result;
   }
 
-  write(data: SheetData, directoryPath: string): void {
+  private setNestedValue(obj: NestedObject, keyPath: string, value: string | undefined): void {
+    const keys = keyPath.split(".");
+    let current = obj;
+
+    // Naviguer jusqu'à l'avant-dernier niveau
+    for (let i = 0; i < keys.length - 1; i++) {
+      const key = keys[i];
+      
+      if (!current[key] || typeof current[key] !== 'object') {
+        current[key] = {};
+      }
+      
+      current = current[key] as NestedObject;
+    }
+
+    // Définir la valeur finale
+    const finalKey = keys[keys.length - 1];
+    current[finalKey] = value;
+  }
+
+  write(data: SheetData, directoryPath: string, sheetPrefix?: string): void {
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: true });
     }
 
     Object.keys(data).forEach((key) => {
-      const filePath = path.join(directoryPath, `${key}.json`);
+      const fileName = sheetPrefix ? `${sheetPrefix}_${key}.json` : `${key}.json`;
+      const filePath = path.join(directoryPath, fileName);
+      
       fs.writeFile(filePath, JSON.stringify(data[key], null, 2), (err) => {
         if (err) {
-          console.error(err);
+          console.error(`Error writing file ${filePath}:`, err);
           return;
         }
-        // console.log(`File written: ${filePath}`);
+        console.log(`File written: ${filePath}`);
       });
     });
+  }
+
+  // Méthode utilitaire pour lister toutes les feuilles disponibles
+  async listSheets(): Promise<string[]> {
+    await this.doc.loadInfo();
+    return this.doc.sheetsByIndex.map(sheet => sheet.title);
   }
 }

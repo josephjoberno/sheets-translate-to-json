@@ -102,3 +102,34 @@ This guide should help you set up and modify the translation script in your Goog
 
 - **Keep the ID safe:** The ID of your spreadsheet can allow anyone to access it if the sharing settings of the sheet are set to "Anyone with the link can edit."
 - **Check permissions:** Ensure that your spreadsheet's permissions are correctly configured to prevent unauthorized access.
+
+## Sheet Methods
+
+### readByName()
+The `readByName()` method allows you to read data from a specific sheet by its name.
+
+```typescript
+const sheet = await sheets.readByName("Sheet1");
+```
+
+This method returns the data from the specified sheet name. If the sheet doesn't exist, it will throw an error.
+
+### readAllSheets()
+The `readAllSheets()` method reads data from all sheets in the spreadsheet.
+
+```typescript
+const allSheets = await sheets.readAllSheets();
+```
+
+This method returns an object where each key is the sheet name and the value is the sheet's data.
+
+### listSheets()
+The `listSheets()` method returns a list of all sheet names in the spreadsheet.
+
+```typescript
+const sheetNames = await sheets.listSheets();
+```
+
+This method returns an array of strings containing all sheet names in the spreadsheet.
+
+---

@@ -455,16 +455,16 @@ describe("SheetManager", () => {
       );
     });
 
-    it("should use sheet prefix when provided", () => {
-      sheetManager.write(mockData, "./output", "dashboard");
+    it("should write files without sheet prefix", () => {
+      sheetManager.write(mockData, "./output");
 
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
-        "./output/dashboard_en.json",
+        "./output/en.json",
         JSON.stringify(mockData.en, null, 2),
         expect.any(Function)
       );
       expect(mockedFs.writeFile).toHaveBeenCalledWith(
-        "./output/dashboard_fr.json",
+        "./output/fr.json",
         JSON.stringify(mockData.fr, null, 2),
         expect.any(Function)
       );

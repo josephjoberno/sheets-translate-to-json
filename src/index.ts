@@ -39,20 +39,47 @@ export class SheetManager {
       await this.jwt.authorize();
       
       if (sheetNames && sheetNames.length > 0) {
-        // Traiter plusieurs feuilles spécifiques
+        // Traiter plusieurs feuilles spécifiques et les combiner
+        const combinedData: SheetData = {};
+        
         for (const sheetName of sheetNames) {
           const data = await this.readByName(sheetName);
           if (data && Object.keys(data).length > 0) {
-            this.write(data, userPath, sheetName);
+            // Combiner les données de cette feuille avec les données existantes
+            Object.keys(data).forEach(language => {
+              if (!combinedData[language]) {
+                combinedData[language] = {};
+              }
+              // Fusionner les données de cette langue
+              this.mergeNestedObjects(combinedData[language] as NestedObject, data[language] as NestedObject);
+            });
           } else {
             console.warn(`No data found in sheet: ${sheetName}`);
           }
         }
+        
+        if (Object.keys(combinedData).length > 0) {
+          this.write(combinedData, userPath);
+        }
       } else {
-        // Traiter toutes les feuilles
-        const data = await this.read();
-        if (data && Object.keys(data).length > 0) {
-          this.write(data, userPath);
+        // Traiter toutes les feuilles et les combiner
+        const allSheetsData = await this.readAllSheets();
+        const combinedData: SheetData = {};
+        
+        // Combiner les données de toutes les feuilles
+        Object.keys(allSheetsData).forEach(sheetName => {
+          const sheetData = allSheetsData[sheetName];
+          Object.keys(sheetData).forEach(language => {
+            if (!combinedData[language]) {
+              combinedData[language] = {};
+            }
+            // Fusionner les données de cette langue
+            this.mergeNestedObjects(combinedData[language] as NestedObject, sheetData[language] as NestedObject);
+          });
+        });
+        
+        if (Object.keys(combinedData).length > 0) {
+          this.write(combinedData, userPath);
         } else {
           console.error("No data found in the sheet");
         }
@@ -158,13 +185,28 @@ export class SheetManager {
     current[finalKey] = value;
   }
 
-  write(data: SheetData, directoryPath: string, sheetPrefix?: string): void {
+  private mergeNestedObjects(target: NestedObject, source: NestedObject): void {
+    for (const key in source) {
+      if (Object.prototype.hasOwnProperty.call(source, key)) {
+        const sourceValue = source[key];
+        const targetValue = target[key];
+
+        if (typeof sourceValue === 'object' && sourceValue !== null && typeof targetValue === 'object' && targetValue !== null) {
+          this.mergeNestedObjects(targetValue as NestedObject, sourceValue as NestedObject);
+        } else {
+          target[key] = sourceValue;
+        }
+      }
+    }
+  }
+
+  write(data: SheetData, directoryPath: string): void {
     if (!fs.existsSync(directoryPath)) {
       fs.mkdirSync(directoryPath, { recursive: true });
     }
 
     Object.keys(data).forEach((key) => {
-      const fileName = sheetPrefix ? `${sheetPrefix}_${key}.json` : `${key}.json`;
+      const fileName = `${key}.json`;
       const filePath = path.join(directoryPath, fileName);
       
       fs.writeFile(filePath, JSON.stringify(data[key], null, 2), (err) => {

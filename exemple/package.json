@@ -2,7 +2,7 @@
   "name": "exemple",
   "version": "1.0.0",
   "description": "",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,6 +10,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "sheets-translate-to-json": "^1.0.1"
+    "sheets-translate-to-json": "file:sheets-translate-to-json-1.0.7.tgz"
   }
 }

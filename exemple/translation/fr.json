@@ -1,8 +1,5 @@
 {
   "login": "se connecter",
   "signup": "s'inscrire",
-  "product": {
-    "add": "ajouter un produit",
-    "name ": "nom du produit"
-  }
+  "professional": "professionnel"
 }

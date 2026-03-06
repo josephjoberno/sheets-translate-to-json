@@ -4,30 +4,39 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "sheets-translate-to-json",
-  tagline: "Translate Google Sheets to JSON",
+  tagline: "Convert Google Sheets translations to structured JSON files",
   favicon: "img/sheets-translate-to-json.ico",
 
-  // Set the production url of your site here
   url: "https://josephjoberno.github.io",
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/sheets-translate-to-json/",
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: "josephjoberno", // Usually your GitHub org/user name.
-  projectName: "sheets-translate-to-json", // Usually your repo name.
+  organizationName: "josephjoberno",
+  projectName: "sheets-translate-to-json",
 
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: "en",
-    locales: ["en"],
+    locales: ["en", "fr", "es"],
+    localeConfigs: {
+      en: { label: "English" },
+      fr: { label: "Francais" },
+      es: { label: "Espanol" },
+    },
   },
+
+  themes: [
+    [
+      require.resolve("@easyops-cn/docusaurus-search-local"),
+      {
+        hashed: true,
+        language: ["en", "fr", "es"],
+        indexBlog: false,
+        docsRouteBasePath: "/docs",
+      },
+    ],
+  ],
 
   presets: [
     [
@@ -35,12 +44,9 @@ const config: Config = {
       {
         docs: {
           sidebarPath: "./sidebars.ts",
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          // editUrl:
-          //   "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+          editUrl:
+            "https://github.com/josephjoberno/sheets-translate-to-json/tree/main/website/",
         },
-
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -49,38 +55,26 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: "img/docusaurus-social-card.jpg",
+    image: "img/sheets-translate-to-json.png",
     navbar: {
-      title: "Home",
+      title: "sheets-translate-to-json",
       logo: {
-        alt: "sheets-translate-to-json-logo",
+        alt: "sheets-translate-to-json logo",
         src: "img/sheets-translate-to-json.png",
       },
       items: [
         {
           type: "docSidebar",
-          sidebarId: "GettingStarted",
+          sidebarId: "docs",
           position: "left",
-          label: "docs",
-          items: [
-            {
-              type: "doc",
-              id: "GettingStarted/installation",
-            },
-            {
-              type: "doc",
-              id: "GettingStarted/configuration",
-            },
-          ],
+          label: "Docs",
         },
-        // {
-        //   type: "localeDropdown",
-        //   position: "right",
-        // },
-
         {
-          href: "https://github.com/josephjoberno/sheets-translate-to-json.git",
+          type: "localeDropdown",
+          position: "right",
+        },
+        {
+          href: "https://github.com/josephjoberno/sheets-translate-to-json",
           label: "GitHub",
           position: "right",
         },
@@ -88,11 +82,40 @@ const config: Config = {
     },
     footer: {
       style: "dark",
+      links: [
+        {
+          title: "Docs",
+          items: [
+            {
+              label: "Installation",
+              to: "/docs/getting-started/installation",
+            },
+            {
+              label: "API Reference",
+              to: "/docs/api/api-reference",
+            },
+          ],
+        },
+        {
+          title: "More",
+          items: [
+            {
+              label: "GitHub",
+              href: "https://github.com/josephjoberno/sheets-translate-to-json",
+            },
+            {
+              label: "npm",
+              href: "https://www.npmjs.com/package/sheets-translate-to-json",
+            },
+          ],
+        },
+      ],
       copyright: `Copyright © ${new Date().getFullYear()} @josephjoberno, MIT License`,
     },
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
+      additionalLanguages: ["bash", "json"],
     },
   } satisfies Preset.ThemeConfig,
 };

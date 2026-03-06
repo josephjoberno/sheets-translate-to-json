@@ -11,6 +11,20 @@ interface SheetData {
   [key: string]: NestedObject;
 }
 
+type SyncStrategy = 'local' | 'remote' | 'merge';
+
+interface SyncOptions {
+  strategy?: SyncStrategy;
+  sheetName?: string;
+  createSheet?: boolean;
+}
+
+interface SyncResult {
+  added: { local: number; remote: number };
+  updated: { local: number; remote: number };
+  languages: string[];
+}
+
 export class SheetManager {
   private doc: GoogleSpreadsheet;
   private jwt: JWT;
@@ -223,5 +237,238 @@ export class SheetManager {
   async listSheets(): Promise<string[]> {
     await this.doc.loadInfo();
     return this.doc.sheetsByIndex.map(sheet => sheet.title);
+  }
+
+  readLocal(directoryPath: string): SheetData {
+    if (!fs.existsSync(directoryPath)) {
+      throw new Error(`Directory not found: ${directoryPath}`);
+    }
+
+    const result: SheetData = {};
+    const files = fs.readdirSync(directoryPath).filter(f => f.endsWith('.json'));
+
+    for (const file of files) {
+      const language = file.replace('.json', '');
+      const filePath = path.join(directoryPath, file);
+      const content = fs.readFileSync(filePath, 'utf-8');
+      result[language] = JSON.parse(content);
+    }
+
+    return result;
+  }
+
+  async push(directoryPath: string, sheetName?: string): Promise<void> {
+    const localData = this.readLocal(directoryPath);
+
+    if (Object.keys(localData).length === 0) {
+      console.warn('No JSON files found in directory');
+      return;
+    }
+
+    await this.doc.loadInfo();
+
+    let sheet: any;
+    if (sheetName) {
+      sheet = this.doc.sheetsByTitle[sheetName];
+      if (!sheet) {
+        sheet = await this.doc.addSheet({ title: sheetName });
+      }
+    } else {
+      sheet = this.doc.sheetsByIndex[0];
+    }
+
+    const languages = Object.keys(localData);
+    const flatData = this.flattenAllLanguages(localData);
+
+    await sheet.clear();
+    await sheet.setHeaderRow(['key', ...languages]);
+
+    const rows = flatData.map(entry => {
+      const row: { [key: string]: string } = { key: entry.key };
+      for (const lang of languages) {
+        row[lang] = entry.values[lang] || '';
+      }
+      return row;
+    });
+
+    if (rows.length > 0) {
+      await sheet.addRows(rows);
+    }
+
+    console.log(`Pushed ${rows.length} keys in ${languages.length} languages to sheet "${sheet.title}"`);
+  }
+
+  async sync(directoryPath: string, options: SyncOptions = {}): Promise<SyncResult> {
+    const { strategy = 'merge', sheetName, createSheet = false } = options;
+
+    await this.doc.loadInfo();
+
+    const result: SyncResult = {
+      added: { local: 0, remote: 0 },
+      updated: { local: 0, remote: 0 },
+      languages: [],
+    };
+
+    // Read remote data
+    let remoteData: SheetData;
+    let sheet: any;
+
+    if (sheetName) {
+      sheet = this.doc.sheetsByTitle[sheetName];
+      if (!sheet) {
+        if (createSheet) {
+          sheet = await this.doc.addSheet({ title: sheetName });
+          remoteData = {};
+        } else {
+          throw new Error(`Sheet "${sheetName}" not found. Use createSheet: true to create it.`);
+        }
+      } else {
+        remoteData = await this.processSheet(sheet);
+      }
+    } else {
+      sheet = this.doc.sheetsByIndex[0];
+      remoteData = await this.processSheet(sheet);
+    }
+
+    // Read local data
+    let localData: SheetData = {};
+    if (fs.existsSync(directoryPath)) {
+      localData = this.readLocal(directoryPath);
+    }
+
+    // Collect all languages
+    const allLanguages = new Set([
+      ...Object.keys(remoteData),
+      ...Object.keys(localData),
+    ]);
+    result.languages = [...allLanguages];
+
+    // Merge data based on strategy
+    const mergedData: SheetData = {};
+    const remoteFlat = this.flattenSheetData(remoteData);
+    const localFlat = this.flattenSheetData(localData);
+    const allKeys = new Set([...Object.keys(remoteFlat), ...Object.keys(localFlat)]);
+
+    for (const compositeKey of allKeys) {
+      const remoteValues = remoteFlat[compositeKey] || {};
+      const localValues = localFlat[compositeKey] || {};
+      const isNewLocal = !remoteFlat[compositeKey];
+      const isNewRemote = !localFlat[compositeKey];
+
+      if (isNewLocal) result.added.local++;
+      if (isNewRemote) result.added.remote++;
+
+      for (const lang of allLanguages) {
+        if (!mergedData[lang]) mergedData[lang] = {};
+
+        const remoteVal = remoteValues[lang];
+        const localVal = localValues[lang];
+        let finalVal: string | undefined;
+
+        if (strategy === 'local') {
+          finalVal = localVal ?? remoteVal;
+        } else if (strategy === 'remote') {
+          finalVal = remoteVal ?? localVal;
+        } else {
+          // merge: prefer non-empty, local wins on conflict
+          if (localVal && remoteVal && localVal !== remoteVal) {
+            finalVal = localVal;
+            if (!isNewLocal && !isNewRemote) result.updated.local++;
+          } else {
+            finalVal = localVal ?? remoteVal;
+          }
+        }
+
+        if (finalVal !== undefined) {
+          // Parse the composite key (lang is separate, compositeKey is the dot-path)
+          const keyPath = compositeKey;
+          if (keyPath.includes('.')) {
+            this.setNestedValue(mergedData[lang] as NestedObject, keyPath, finalVal);
+          } else {
+            (mergedData[lang] as NestedObject)[keyPath] = finalVal;
+          }
+        }
+      }
+    }
+
+    // Write merged data to local files
+    this.write(mergedData, directoryPath);
+
+    // Write merged data back to remote sheet
+    const mergedLanguages = Object.keys(mergedData);
+    const flatMerged = this.flattenAllLanguages(mergedData);
+
+    await sheet.clear();
+    await sheet.setHeaderRow(['key', ...mergedLanguages]);
+
+    const rows = flatMerged.map(entry => {
+      const row: { [key: string]: string } = { key: entry.key };
+      for (const lang of mergedLanguages) {
+        row[lang] = entry.values[lang] || '';
+      }
+      return row;
+    });
+
+    if (rows.length > 0) {
+      await sheet.addRows(rows);
+    }
+
+    result.updated.remote = flatMerged.length;
+
+    console.log(`Sync complete: ${result.added.local} new local keys, ${result.added.remote} new remote keys`);
+    return result;
+  }
+
+  private flattenNestedObject(obj: NestedObject, prefix: string = ''): { [key: string]: string } {
+    const result: { [key: string]: string } = {};
+
+    for (const key in obj) {
+      if (!Object.prototype.hasOwnProperty.call(obj, key)) continue;
+      const value = obj[key];
+      const fullKey = prefix ? `${prefix}.${key}` : key;
+
+      if (typeof value === 'object' && value !== null) {
+        Object.assign(result, this.flattenNestedObject(value as NestedObject, fullKey));
+      } else if (typeof value === 'string') {
+        result[fullKey] = value;
+      }
+    }
+
+    return result;
+  }
+
+  private flattenSheetData(data: SheetData): { [key: string]: { [lang: string]: string | undefined } } {
+    const result: { [key: string]: { [lang: string]: string | undefined } } = {};
+
+    for (const lang of Object.keys(data)) {
+      const flat = this.flattenNestedObject(data[lang] as NestedObject);
+      for (const key of Object.keys(flat)) {
+        if (!result[key]) result[key] = {};
+        result[key][lang] = flat[key];
+      }
+    }
+
+    return result;
+  }
+
+  private flattenAllLanguages(data: SheetData): { key: string; values: { [lang: string]: string } }[] {
+    const languages = Object.keys(data);
+    const allKeys = new Set<string>();
+
+    const flatByLang: { [lang: string]: { [key: string]: string } } = {};
+    for (const lang of languages) {
+      flatByLang[lang] = this.flattenNestedObject(data[lang] as NestedObject);
+      for (const key of Object.keys(flatByLang[lang])) {
+        allKeys.add(key);
+      }
+    }
+
+    const sortedKeys = [...allKeys].sort();
+    return sortedKeys.map(key => ({
+      key,
+      values: Object.fromEntries(
+        languages.map(lang => [lang, flatByLang[lang][key] || ''])
+      ),
+    }));
   }
 }

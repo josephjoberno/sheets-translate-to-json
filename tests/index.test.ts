@@ -503,4 +503,209 @@ describe("SheetManager", () => {
       expect(result).toEqual(["translations", "dashboard"]);
     });
   });
+
+  describe("readLocal", () => {
+    it("should read JSON files from directory", () => {
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue(["en.json", "fr.json"]);
+      (mockedFs.readFileSync as jest.Mock)
+        .mockReturnValueOnce(JSON.stringify({ greeting: "Hello" }))
+        .mockReturnValueOnce(JSON.stringify({ greeting: "Bonjour" }));
+
+      const result = sheetManager.readLocal("./translations");
+
+      expect(result).toEqual({
+        en: { greeting: "Hello" },
+        fr: { greeting: "Bonjour" },
+      });
+    });
+
+    it("should throw if directory does not exist", () => {
+      mockedFs.existsSync.mockReturnValue(false);
+
+      expect(() => sheetManager.readLocal("./nonexistent")).toThrow(
+        "Directory not found: ./nonexistent"
+      );
+    });
+
+    it("should ignore non-JSON files", () => {
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue(["en.json", "readme.txt"]);
+      (mockedFs.readFileSync as jest.Mock)
+        .mockReturnValueOnce(JSON.stringify({ key: "value" }));
+
+      const result = sheetManager.readLocal("./translations");
+
+      expect(result).toEqual({
+        en: { key: "value" },
+      });
+    });
+  });
+
+  describe("push", () => {
+    it("should push local JSON data to Google Sheets", async () => {
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue(["en.json", "fr.json"]);
+      (mockedFs.readFileSync as jest.Mock)
+        .mockReturnValueOnce(JSON.stringify({ greeting: "Hello", nav: { home: "Home" } }))
+        .mockReturnValueOnce(JSON.stringify({ greeting: "Bonjour", nav: { home: "Accueil" } }));
+
+      mockSheet.clear = jest.fn().mockResolvedValue(undefined);
+      mockSheet.setHeaderRow = jest.fn().mockResolvedValue(undefined);
+      mockSheet.addRows = jest.fn().mockResolvedValue(undefined);
+
+      await sheetManager.push("./translations");
+
+      expect(mockSheet.clear).toHaveBeenCalled();
+      expect(mockSheet.setHeaderRow).toHaveBeenCalledWith(["key", "en", "fr"]);
+      expect(mockSheet.addRows).toHaveBeenCalledWith([
+        { key: "greeting", en: "Hello", fr: "Bonjour" },
+        { key: "nav.home", en: "Home", fr: "Accueil" },
+      ]);
+    });
+
+    it("should create a new sheet if sheetName does not exist", async () => {
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue(["en.json"]);
+      (mockedFs.readFileSync as jest.Mock)
+        .mockReturnValueOnce(JSON.stringify({ hello: "Hello" }));
+
+      const newSheet = {
+        title: "NewSheet",
+        clear: jest.fn().mockResolvedValue(undefined),
+        setHeaderRow: jest.fn().mockResolvedValue(undefined),
+        addRows: jest.fn().mockResolvedValue(undefined),
+      };
+
+      mockDoc.addSheet = jest.fn().mockResolvedValue(newSheet);
+
+      await sheetManager.push("./translations", "NewSheet");
+
+      expect(mockDoc.addSheet).toHaveBeenCalledWith({ title: "NewSheet" });
+      expect(newSheet.clear).toHaveBeenCalled();
+      expect(newSheet.addRows).toHaveBeenCalledWith([
+        { key: "hello", en: "Hello" },
+      ]);
+    });
+
+    it("should warn when no JSON files found", async () => {
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue([]);
+
+      const consoleSpy = jest.spyOn(console, "warn").mockImplementation();
+
+      await sheetManager.push("./translations");
+
+      expect(consoleSpy).toHaveBeenCalledWith("No JSON files found in directory");
+      consoleSpy.mockRestore();
+    });
+  });
+
+  describe("sync", () => {
+    beforeEach(() => {
+      mockSheet.clear = jest.fn().mockResolvedValue(undefined);
+      mockSheet.setHeaderRow = jest.fn().mockResolvedValue(undefined);
+      mockSheet.addRows = jest.fn().mockResolvedValue(undefined);
+    });
+
+    it("should sync local and remote data with merge strategy", async () => {
+      // Remote has: greeting = "Hello" / "Bonjour"
+      const mockRows = [
+        {
+          get: jest.fn()
+            .mockReturnValueOnce("greeting")
+            .mockReturnValueOnce("Hello")
+            .mockReturnValueOnce("Bonjour")
+            .mockReturnValueOnce(""),
+        },
+      ];
+      mockSheet.getRows.mockResolvedValue(mockRows);
+
+      // Local has: greeting + farewell
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue(["en.json", "fr.json"]);
+      (mockedFs.readFileSync as jest.Mock)
+        .mockReturnValueOnce(JSON.stringify({ greeting: "Hi", farewell: "Bye" }))
+        .mockReturnValueOnce(JSON.stringify({ greeting: "Salut", farewell: "Au revoir" }));
+
+      mockedFs.writeFile.mockImplementation((_path, _data, callback: any) => {
+        callback(null);
+      });
+
+      const result = await sheetManager.sync("./translations");
+
+      expect(result.languages).toContain("en");
+      expect(result.languages).toContain("fr");
+      expect(result.added.local).toBe(1); // farewell is new to remote
+      expect(mockSheet.clear).toHaveBeenCalled();
+      expect(mockSheet.addRows).toHaveBeenCalled();
+      expect(mockedFs.writeFile).toHaveBeenCalled();
+    });
+
+    it("should use remote strategy when specified", async () => {
+      const mockRows = [
+        {
+          get: jest.fn()
+            .mockReturnValueOnce("greeting")
+            .mockReturnValueOnce("Hello")
+            .mockReturnValueOnce("Bonjour")
+            .mockReturnValueOnce("Hola"),
+        },
+      ];
+      mockSheet.getRows.mockResolvedValue(mockRows);
+
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue(["en.json"]);
+      (mockedFs.readFileSync as jest.Mock)
+        .mockReturnValueOnce(JSON.stringify({ greeting: "Hi" }));
+
+      mockedFs.writeFile.mockImplementation((_path, _data, callback: any) => {
+        callback(null);
+      });
+
+      const result = await sheetManager.sync("./translations", { strategy: "remote" });
+
+      // With remote strategy, remote value wins
+      expect(result.languages.length).toBeGreaterThan(0);
+      expect(mockSheet.addRows).toHaveBeenCalled();
+    });
+
+    it("should throw if sheet not found and createSheet is false", async () => {
+      await expect(
+        sheetManager.sync("./translations", { sheetName: "nonexistent" })
+      ).rejects.toThrow('Sheet "nonexistent" not found');
+    });
+
+    it("should create sheet when createSheet is true", async () => {
+      const newSheet = {
+        title: "NewSheet",
+        clear: jest.fn().mockResolvedValue(undefined),
+        setHeaderRow: jest.fn().mockResolvedValue(undefined),
+        addRows: jest.fn().mockResolvedValue(undefined),
+        loadHeaderRow: jest.fn().mockResolvedValue(undefined),
+        headerValues: [],
+        rowCount: 0,
+        getRows: jest.fn().mockResolvedValue([]),
+      };
+
+      mockDoc.addSheet = jest.fn().mockResolvedValue(newSheet);
+
+      mockedFs.existsSync.mockReturnValue(true);
+      (mockedFs.readdirSync as jest.Mock).mockReturnValue(["en.json"]);
+      (mockedFs.readFileSync as jest.Mock)
+        .mockReturnValueOnce(JSON.stringify({ hello: "Hello" }));
+
+      mockedFs.writeFile.mockImplementation((_path, _data, callback: any) => {
+        callback(null);
+      });
+
+      const result = await sheetManager.sync("./translations", {
+        sheetName: "NewSheet",
+        createSheet: true,
+      });
+
+      expect(mockDoc.addSheet).toHaveBeenCalledWith({ title: "NewSheet" });
+      expect(result.added.local).toBe(1);
+    });
+  });
 });

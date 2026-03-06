@@ -1,5 +1,121 @@
 {
   "login": "se connecter",
   "signup": "s'inscrire",
-  "professional": "professionnel"
+  "professional": "professionnel",
+  "influencer": {
+    "title": "Nos influenceurs",
+    "subtitle": "Avis d'influenceurs. Informer, divertir et inspirer."
+  },
+  "all": "tous",
+  "about": {
+    "title": "Qui sommes-nous ?",
+    "description": "CreaticsHub met en relation les influenceurs avec les marques, les créatifs et les entrepreneurs pour susciter des collaborations authentiques et percutantes.\nNous dynamisons votre marketing en transformant la portée des influenceurs en résultats concrets : visibilité, engagement et confiance envers vos produits et services."
+  },
+  "categories": {
+    "description": "Trouvez des influenceurs dans différentes catégories pour correspondre parfaitement à votre secteur."
+  },
+  "services": {
+    "title": "Ce que nous proposons",
+    "content_ideas": "Nous aidons à générer des concepts créatifs qui trouvent un écho auprès de votre public cible.",
+    "campaign_management": "Nous assurons une coordination fluide entre les marques et les influenceurs pour des campagnes réussies.",
+    "performance_analysis": "Suivez l’impact de vos collaborations avec des rapports détaillés.",
+    "pay_influencers_title": "Payer vos influenceurs n'a jamais été aussi simple !",
+    "pay_influencers_description": "Rémunérez vos créateurs de contenu et vos affiliés en un seul clic. Automatisez les calculs de commissions et les demandes de paiement. Connectez votre compte PayPal et effectuez des paiements facilement, rapidement et régulièrement.",
+    "content_ideas_title": "Idées de contenu",
+    "campaign_management_title": "Gestion de campagne",
+    "performance_analysis_title": "Suivez l'impact de vos collaborations avec des rapports détaillés"
+  },
+  "marketing": {
+    "boost_audience": "Gagnez le cœur et l’esprit de votre public grâce aux influenceurs.",
+    "optimize_socials": "Optimisez vos efforts sur les réseaux sociaux pour un impact accru.",
+    "promote_product": "Faites la promotion de votre produit et de votre marque : augmentez votre visibilité grâce à des partenariats stratégiques.",
+    "grow_business": "Développez et faites évoluer votre entreprise : touchez de nouveaux marchés et de nouveaux publics grâce à des collaborations ciblées.",
+    "successful_campaigns": "Menez des campagnes réussies sur les réseaux sociaux : bénéficiez de notre expertise pour maximiser l’engagement et le retour sur investissement.",
+    "boost_audience_title": "Payer vos influenceurs n'a jamais été aussi simple !"
+  },
+  "influencers": {
+    "best": "Nos meilleurs influenceurs",
+    "description": "Découvrez notre sélection de top influenceurs prêts à collaborer et donner vie à vos projets."
+  },
+  "why": {
+    "choose_us": "Pourquoi nous choisir",
+    "description": "Maximisez votre impact sur les réseaux sociaux avec CreaticsHub."
+  },
+  "why_reasons": {
+    "connections_title": "Connexions personnalisées",
+    "connections": "Trouvez des influenceurs qui partagent réellement les valeurs de votre marque et touchez votre public cible.",
+    "expertise": "De la création du concept à l'exécution, nous offrons un accompagnement complet pour vos campagnes d'influence.",
+    "expertise_title": "Expertise de campagne",
+    "data_driven_title": "Résultats basés sur les données",
+    "data_driven": "Analysez le succès de chaque campagne avec des rapports de performances détaillés.",
+    "time_saving_title": "Des solutions permettant de gagner du temps",
+    "time_saving": "Économisez des heures de travail en utilisant notre plateforme simplifiée pour rechercher et gérer vos collaborations."
+  },
+  "faq": {
+    "title": "Foire aux questions (FAQ)",
+    "what_is_creaticshub": "Qu’est-ce que CreaticsHub ?",
+    "what_is_creaticshub_answer": "CreaticsHub est une plateforme qui facilite la collaboration entre les influenceurs avec des agences de marketing, des artistes et des entrepreneurs. Notre objectif est de faciliter des collaborations efficaces pour promouvoir des produits et services en utilisant la puissance des médias sociaux.",
+    "description": "les FAQ les plus importantes"
+  },
+  "our_teams": {
+    "descriptiion": "Rencontrez l'équipe passionnée qui travaille pour faire de CreaticsHub un succès. Chacun de nos membres apporte son expertise, sa créativité et son dévouement pour proposer des solutions adaptées à vos besoins."
+  },
+  "our_process": {
+    "description": "Chez CreaticsHub, nous nous engageons à rendre le processus de mise en relation des marques et des influenceurs simple et efficace. Notre approche repose sur trois principes clés : des connexions personnalisées, une gestion de campagne simplifiée et des analyses basées sur les données."
+  },
+  "join_us": {
+    "description": "Que vous soyez une marque cherchant à accroître sa visibilité ou un influenceur cherchant à collaborer avec des entreprises renommées, CreaticsHub est votre partenaire de confiance pour atteindre vos objectifs."
+  },
+  "why_choose_us": {
+    "description": "Notre équipe possède une connaissance approfondie du marketing d’influence et des tendances actuelles du marché. Plateforme intuitive : profitez d'une interface conviviale conçue pour simplifier chaque étape de votre collaboration avec les influenceurs. Un accompagnement dédié : Nous vous proposons une assistance personnalisée pour répondre à vos besoins spécifiques et assurer le succès de vos campagnes."
+  },
+  "what_we_offer": {
+    "description": "Accédez à un vaste réseau d'influenceurs qualifiés dans divers secteurs pour trouver le partenaire idéal pour votre marque. Gestion des campagnes : bénéficiez d'outils intégrés pour planifier, exécuter et suivre vos campagnes marketing en toute transparence. Analyses approfondies : obtenez des rapports détaillés sur les performances de votre campagne pour mesurer le retour sur investissement et affiner vos stratégies."
+  },
+  "client": "Clientèle",
+  "completed_jobs": "Travaux terminés",
+  "landing": {
+    "hero_title_1": "Vous recherchez des influenceurs ?",
+    "hero_title_2": "Découvrez nos influenceurs",
+    "influencers_helping_you": "Les influenceurs peuvent propulser votre marque à l’échelle mondiale",
+    "influencers_helping_subtitle": "Rejoignez un réseau exclusif d'influenceurs et boostez la portée de votre marque de manière innovante et créative"
+  },
+  "search": "Recherche",
+  "task": {
+    "done": "Travaux terminés"
+  },
+  "button": {
+    "read_more": "En savoir plus"
+  },
+  "our_experience_subtitle": "Notre expérience",
+  "our_experience_title": "Faites connaître votre marque grâce à nos Influenceurs",
+  "our_experience_description": "Nous connectons les entreprises avec des influenceurs de confiance pour accroître la visibilité, favoriser un engagement authentique et maximiser l'impact sur les réseaux sociaux",
+  "our_experience_t1": "Projets terminés",
+  "our_experience_t2": "Taux de satisfaction",
+  "our_experience_t3": "Influenceurs partenaires",
+  "faq_q1_title": "Quelle est la mission de votre entreprise ?",
+  "faq_q1_response": "Notre mission est de connecter les talents créatifs aux opportunités économiques durables",
+  "faq_q2_title": "Quels services proposez-vous ?",
+  "faq_q2_response": "Nous proposons une plateforme collaborative de promotion de produits et services via les réseaux sociaux",
+  "faq_q3_title": "Comment fonctionne votre plateforme ?",
+  "faq_q3_response": "Les utilisateurs s'inscrivent, créent un profil et accèdent à des campagnes de collaboration payantes",
+  "faq_q4_title": "Qu'est-ce qui vous distingue de vos concurrents ?",
+  "faq_q4_response": "Nous nous appuyons sur l’authenticité de nos créateurs et sur une technologie de matchmaking intelligente.",
+  "welcome": "Accueillir",
+  "export": "Exporter",
+  "filters": {
+    "filter_by": "Filtrer par",
+    "from": "Depuis",
+    "to": "À",
+    "last_3_days": "Les 3 derniers jours",
+    "last_28_days": "Les 28 derniers jours",
+    "a_week": "Une semaine",
+    "a_month": "Un mois",
+    "clear": "Clair"
+  },
+  "tables": {
+    "name": "Nom",
+    "title": "Titre"
+  },
+  "our_service": "Notre service"
 }

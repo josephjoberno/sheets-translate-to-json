@@ -1,174 +1,162 @@
-<div class="text--center">
-    <img src="./website/static/img/sheets-translate-to-json.png" alt="Alternate description" />
+# sheets-translate-to-json
+
+[![npm version](https://img.shields.io/npm/v/sheets-translate-to-json.svg)](https://www.npmjs.com/package/sheets-translate-to-json)
+[![license](https://img.shields.io/npm/l/sheets-translate-to-json.svg)](https://github.com/josephjoberno/sheets-translate-to-json/blob/main/LICENSE)
+[![npm downloads](https://img.shields.io/npm/dm/sheets-translate-to-json.svg)](https://www.npmjs.com/package/sheets-translate-to-json)
+
+Convert Google Sheets translations into structured JSON files for your i18n workflow.
+
+<div align="center">
+  <img src="./website/static/img/sheets-translate-to-json.png" alt="sheets-translate-to-json" width="200" />
 </div>
 
-**sheets-translate-to-json** is a library designed to simplify interactions with Google Sheets in Node.js applications. It provides a smooth and powerful interface for reading and writing data in spreadsheets, making data management more intuitive and less tedious.
-
-## Why **sheets-translate-to-json**?
-
-The **sheets-translate-to-json** project was created to fill the need for seamless integration between Node.js applications and Google Sheets. It aims to offer a simple yet effective solution for manipulating spreadsheets without worrying about the underlying technical details.
-
-## Get Started Now
-
-
-# Installation
-
-Welcome to the installation section of `sheet-translate-to-json`, a powerful library for managing and interacting with Google Sheets in Node.js. Follow these steps to properly install and configure the library in your project.
-
----------
-
-## Prerequisites
-
-Before you begin, make sure you have the following installed and configured:
-
-- Node.js (version 14.x or higher)
-- npm (usually included with Node.js)
-
-## Installing the Library
-
-Open your terminal and run the following command in your project directory to install `sheets-translate-to-json`:
+## Installation
 
 ```bash
 npm install sheets-translate-to-json
 ```
-or 
 
-```bash
-yarn add sheets-translate-to-json
+## Quick start
+
+```typescript
+import { SheetManager } from 'sheets-translate-to-json';
+
+const manager = new SheetManager(
+  process.env.PRIVATE_KEY,
+  process.env.CLIENT_EMAIL,
+  process.env.SHEET_ID
+);
+
+// Read all sheets and write JSON files
+await manager.init('./translations');
 ```
 
-or
+This reads your Google Sheet and generates one JSON file per language (`en.json`, `fr.json`, etc.) in the specified directory.
 
-```bash
-pnpm install sheets-translate-to-json
-```
----
+## Features
 
-## Initialization
+- **One-command workflow** — `init()` reads and writes in a single call
+- **Multi-sheet support** — Process specific sheets or merge all sheets automatically
+- **Nested keys** — Dot-notation keys (e.g., `nav.home`) are expanded into nested JSON
+- **TypeScript** — Full type definitions included
+- **Dual module** — Works with both ESM and CommonJS
+- **Two-way sync** — Push local changes back to Google Sheets, or use `sync` to reconcile both directions
 
-To start using `sheets-translate-to-json`, you first need to create an instance of the `SheetManager` class.
+## API
 
-### Constructor
+### `new SheetManager(privateKey, clientEmail, sheetId)`
 
-```javascript
-const manager = new SheetManager(privateKey, clientEmail, sheetId);
-```
+Creates a new instance connected to your Google Sheet.
 
-| Parameter   | Type   | Description                                   |
-|-------------|--------|-----------------------------------------------|
-| privateKey  | String | The private key of your service account.      |
-| clientEmail | String | The email associated with your service account.|
-| sheetId     | String | The ID of your Google Sheets sheet.           |
+### `manager.init(directory, sheetNames?)`
 
-## Methods
+Reads data from the spreadsheet and writes JSON files to the specified directory. Optionally pass an array of sheet names to process only specific sheets.
 
-### init
+```typescript
+// Process all sheets
+await manager.init('./translations');
 
-Initializes the connection to the spreadsheet and writes data to a specified path.
-
-```javascript
-manager.init(userPath);
+// Process specific sheets only
+await manager.init('./translations', ['Homepage', 'Settings']);
 ```
 
-| Parameter | Type   | Description                                  |
-|-----------|--------|----------------------------------------------|
-| userPath  | String | The path of the folder where to write data.  |
+### `manager.read(sheetPosition?)`
 
-### read (async)
+Reads data from a single sheet by index (default: `0`).
 
-Reads data from the specified spreadsheet.
-
-```javascript
-manager.read(sheetPosition).then(data => {
-  // Use the data here
-});
+```typescript
+const data = await manager.read();     // first sheet
+const data = await manager.read(2);    // third sheet
 ```
 
-| Parameter    | Type   | Description                                       |
-|--------------|--------|---------------------------------------------------|
-| sheetPosition| Number | The position of the sheet in the workbook (0-index).|
+### `manager.readByName(sheetName)`
 
-### write (async)
+Reads data from a sheet by its name.
 
-Writes data to a JSON file in the specified path.
-
-```javascript
-manager.write(data, directoryPath);
+```typescript
+const data = await manager.readByName('Homepage');
 ```
 
-| Parameter    | Type   | Description                                      |
-|--------------|--------|--------------------------------------------------|
-| data         | Object | The data to write.                               |
-| directoryPath| String | The path of the folder where to write JSON files.|
+### `manager.readAllSheets()`
 
-## Examples of Using SheetManager
+Reads data from all sheets. Returns an object keyed by sheet name.
 
-### Using the `init` Method
-
-The `init` method of `SheetManager` automates the process of reading data from the Google Sheets spreadsheet and writing this data into JSON files.
-
-```javascript
-const manager = new SheetManager(privateKey, clientEmail, sheetId);
-
-// Path where JSON files will be saved
-const userPath = './translations';
-
-// Initialization and automatic processing
-manager.init(userPath)
-  .then(() => console.log('Data successfully read and written.'))
-  .catch(err => console.error('Error during initialization:', err));
+```typescript
+const allData = await manager.readAllSheets();
 ```
 
-In this example, `init` takes care of the entire process: it establishes the connection, reads the data from the specified spreadsheet, and writes this data to the `./translations` directory.
+### `manager.write(data, directory)`
 
-### Separately Using the `read` and `write` Methods
+Writes a `SheetData` object to JSON files (one per language).
 
-If you prefer more control over the process, you can use the `read` and `write` methods separately. This allows you to manipulate the data between reading and writing if necessary.
-
-```javascript
-const manager = new SheetManager(privateKey, clientEmail, sheetId);
-
-// Reading data from the first spreadsheet
-manager.read()
-  .then(data => {
-    console.log('Data successfully read.');
-    // Data processing or manipulation here if needed
-
-    // Path where JSON files will be saved
-    const directoryPath = './translations';
-    // Writing data into JSON files
-    manager.write(data, directoryPath);
-    console.log('Data written into JSON files.');
-  })
-  .catch(err => console.error('Error during reading:', err));
+```typescript
+const data = await manager.read();
+manager.write(data, './translations');
 ```
 
-In this scenario, `read` is used to retrieve the data from the spreadsheet, and after any potential data processing, `write` is used to write this data into local JSON files.
+### `manager.readLocal(directoryPath)`
 
----
+Reads JSON files from a local directory back into `SheetData` format. Throws if the directory doesn't exist. Only reads `.json` files.
 
-### Result of Executing the SheetManager Script
+```typescript
+const data = manager.readLocal('./translations');
+```
 
-After running the `SheetManager` script, the following folder is created with the generated JSON files:
+### `manager.push(directoryPath, sheetName?)`
 
-![Folder with JSON files](./website/static/img/result-translations.png)
+Reads local JSON files and uploads them to Google Sheets. Nested objects are flattened back to dot-notation. If `sheetName` is provided and doesn't exist, a new sheet is created.
 
----
+```typescript
+await manager.push('./translations');
+await manager.push('./translations', 'Homepage');
+```
 
+### `manager.sync(directoryPath, options?)`
 
-### The Author
+Two-way sync between local JSON files and Google Sheets. Returns a `SyncResult` describing what changed.
 
-**sheets-translate-to-json** is a creation of [@josephjoberno](https://github.com/josephjoberno), a developer passionate about automating and optimizing work processes. His goal is to make data operations more accessible and less complex for developers at all levels.
+```typescript
+const result = await manager.sync('./translations');
+// Strategies: 'local' | 'remote' | 'merge' (default)
+await manager.sync('./translations', { strategy: 'local', sheetName: 'Homepage', createSheet: true });
+```
 
-### Contributions
+### `manager.listSheets()`
 
-We are always excited to welcome new contributions! If you want to contribute to **sheets-translate-to-json**, here's how you can do it:
+Returns the names of all sheets in the spreadsheet.
 
-1. **Fork the project**: Start by forking the project on GitHub.
-2. **Clone your fork**: Clone your fork to your local machine.
-3. **Create a new branch**: It's best to work on a new branch for any new feature or fix.
-4. **Make your changes**: Add or modify features as per your ideas.
-5. **Test your changes**: Ensure your code works as expected.
-6. **Submit a Pull Request**: Create a Pull Request to merge your changes into the main project.
+```typescript
+const names = await manager.listSheets();
+// ['Homepage', 'Settings', 'Emails']
+```
 
-For more details on contributing, please check our contribution guide on GitHub.
+## Spreadsheet format
+
+| key | en | fr | es |
+|-----|----|----|-----|
+| greeting | Hello | Bonjour | Hola |
+| nav.home | Home | Accueil | Inicio |
+| nav.about | About | A propos | Acerca de |
+
+Dot-notation keys are automatically expanded:
+
+```json
+{
+  "greeting": "Hello",
+  "nav": {
+    "home": "Home",
+    "about": "About"
+  }
+}
+```
+
+## Prerequisites
+
+- Node.js >= 18.0
+- A Google Cloud service account with Google Sheets API enabled
+
+See the [full documentation](https://josephjoberno.github.io/sheets-translate-to-json/) for setup instructions.
+
+## License
+
+[ISC](./LICENSE)

@@ -1,0 +1,121 @@
+# sheets-translate-to-json
+
+> Convert Google Sheets translations into structured JSON files for i18n workflows.
+
+## Overview
+
+sheets-translate-to-json is a Node.js/TypeScript library that reads translation data from Google Sheets spreadsheets and generates structured JSON files, one per language. It supports nested keys via dot notation, multi-sheet merging, and both ESM and CommonJS.
+
+## Installation
+
+```bash
+npm install sheets-translate-to-json
+```
+
+## Quick start
+
+```typescript
+import { SheetManager } from 'sheets-translate-to-json';
+
+const manager = new SheetManager(privateKey, clientEmail, sheetId);
+await manager.init('./translations');
+// Generates en.json, fr.json, es.json, etc.
+```
+
+## API
+
+### SheetManager(privateKey: string, clientEmail: string, sheetId: string)
+
+Creates a manager instance connected to a Google Sheet via a service account.
+
+### manager.init(userPath: string, sheetNames?: string[]): Promise<void>
+
+Main method. Reads data from the spreadsheet and writes one JSON file per language to `userPath`. If `sheetNames` is provided, only those sheets are processed; otherwise all sheets are read and merged.
+
+### manager.read(sheetPosition?: number): Promise<SheetData>
+
+Reads data from a single sheet by zero-based index (default: 0).
+
+### manager.readByName(sheetName: string): Promise<SheetData>
+
+Reads data from a specific sheet by its tab name. Throws if not found.
+
+### manager.readAllSheets(): Promise<{ [sheetName: string]: SheetData }>
+
+Reads all sheets. Returns an object keyed by sheet name.
+
+### manager.write(data: SheetData, directoryPath: string): void
+
+Writes SheetData to JSON files (one per language). Creates the directory if needed. This method is synchronous.
+
+### manager.readLocal(directoryPath: string): SheetData
+
+Reads JSON files from a local directory back into SheetData format. Only reads `.json` files. Throws if the directory doesn't exist.
+
+### manager.push(directoryPath: string, sheetName?: string): Promise<void>
+
+Reads local JSON files and uploads them to Google Sheets. Flattens nested objects back to dot-notation. If sheetName is provided and doesn't exist, creates a new sheet.
+
+### manager.sync(directoryPath: string, options?: SyncOptions): Promise<SyncResult>
+
+Two-way sync between local JSON files and Google Sheets. Compares local and remote data and reconciles based on the chosen strategy (default: merge).
+
+### manager.listSheets(): Promise<string[]>
+
+Returns an array of all sheet tab names.
+
+## Types
+
+```typescript
+interface NestedObject {
+  [key: string]: string | NestedObject | undefined;
+}
+
+interface SheetData {
+  [key: string]: NestedObject;
+}
+```
+
+SheetData keys are language codes (matching spreadsheet column headers). Values are nested translation objects. Dot-notation keys (e.g., `nav.home`) are automatically expanded.
+
+```typescript
+type SyncStrategy = 'local' | 'remote' | 'merge';
+
+interface SyncOptions {
+  strategy?: SyncStrategy;  // default: 'merge'
+  sheetName?: string;       // specific sheet to sync with
+  createSheet?: boolean;    // create sheet if not found (default: false)
+}
+
+interface SyncResult {
+  added: { local: number; remote: number };
+  updated: { local: number; remote: number };
+  languages: string[];
+}
+```
+
+- `SyncStrategy` — `'local'` (local wins), `'remote'` (remote wins), or `'merge'` (combine both, prefer local on conflicts).
+- `SyncOptions` — Configuration for sync: strategy, target sheet name, and whether to create the sheet if missing.
+- `SyncResult` — Describes the outcome: keys added/updated on each side, and which languages were synced.
+
+## Spreadsheet format
+
+| key       | en      | fr       | es     |
+|-----------|---------|----------|--------|
+| greeting  | Hello   | Bonjour  | Hola   |
+| nav.home  | Home    | Accueil  | Inicio |
+| nav.about | About   | A propos | Acerca |
+
+Column A contains translation keys. Other columns are languages with the header as the language code.
+
+## Prerequisites
+
+- Node.js >= 18.0
+- Google Cloud service account with Google Sheets API enabled
+- Spreadsheet shared with the service account email
+
+## Links
+
+- Documentation: https://josephjoberno.github.io/sheets-translate-to-json/
+- Repository: https://github.com/josephjoberno/sheets-translate-to-json
+- npm: https://www.npmjs.com/package/sheets-translate-to-json

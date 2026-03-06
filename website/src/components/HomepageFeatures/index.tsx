@@ -10,32 +10,33 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: 'Simple Integration',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Connect to your Google Sheets and generate JSON translation files with
+        just a few lines of code. Works with both ESM and CommonJS.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Multi-Sheet Support',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Read from specific sheets or merge all sheets automatically.
+        Dot-notation keys are expanded into nested JSON objects.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Built with TypeScript',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Full TypeScript support with type definitions included.
+        Use <code>init()</code> for the quick path or <code>read()</code>/<code>write()</code> for
+        full control.
       </>
     ),
   },

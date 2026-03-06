@@ -1,0 +1,23 @@
+{
+  "link.title.Docs": {
+    "message": "Documentation"
+  },
+  "link.title.More": {
+    "message": "Plus"
+  },
+  "link.item.label.Installation": {
+    "message": "Installation"
+  },
+  "link.item.label.API Reference": {
+    "message": "Référence API"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub"
+  },
+  "link.item.label.npm": {
+    "message": "npm"
+  },
+  "copyright": {
+    "message": "Copyright © 2026 @josephjoberno, Licence MIT"
+  }
+}

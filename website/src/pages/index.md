@@ -1,36 +1,50 @@
 ---
-
-title: Home
+title: sheets-translate-to-json
 slug: /
 ---
 
 <div class="text--center">
-    <img src="img/sheets-translate-to-json.png" alt="Alternate description" />
+    <img src="img/sheets-translate-to-json.png" alt="sheets-translate-to-json logo" width="200" />
 </div>
 
-**sheets-translate-to-json** is a library designed to simplify interactions with Google Sheets in Node.js applications. It provides a smooth and powerful interface for reading and writing data in spreadsheets, making data management more intuitive and less tedious.
+<div class="text--center" style={{fontSize: '1.2rem', margin: '1rem 0 2rem'}}>
 
-## Why **sheets-translate-to-json**?
+Convert your Google Sheets translations into structured JSON files with a single command.
 
-The **sheets-translate-to-json** project was created to fill the need for seamless integration between Node.js applications and Google Sheets. It aims to offer a simple yet effective solution for manipulating spreadsheets without worrying about the underlying technical details.
+</div>
 
-### The Author
+## Quick start
 
-**sheets-translate-to-json** is a creation of [@josephjoberno](https://github.com/josephjoberno), a developer passionate about automating and optimizing work processes. His goal is to make data operations more accessible and less complex for developers at all levels.
+```bash
+npm install sheets-translate-to-json
+```
 
-### Contributions
+```typescript
+import { SheetManager } from 'sheets-translate-to-json';
 
-We are always excited to welcome new contributions! If you want to contribute to **sheets-translate-to-json**, here's how you can do it:
+const manager = new SheetManager(privateKey, clientEmail, sheetId);
+await manager.init('./translations');
+// Creates en.json, fr.json, es.json, etc.
+```
 
-1. **Fork the project**: Start by forking the project on GitHub.
-2. **Clone your fork**: Clone your fork to your local machine.
-3. **Create a new branch**: It's best to work on a new branch for any new feature or fix.
-4. **Make your changes**: Add or modify features as per your ideas.
-5. **Test your changes**: Ensure your code works as expected.
-6. **Submit a Pull Request**: Create a Pull Request to merge your changes into the main project.
+## Features
 
-For more details on contributing, please check our contribution guide on GitHub.
+- **Simple API** — One method to fetch and write all translations
+- **Multi-sheet support** — Read from specific sheets or merge all sheets automatically
+- **Nested keys** — Dot-notation keys (`nav.home`) are expanded into nested JSON objects
+- **TypeScript** — Full type definitions included
+- **Flexible** — Use `init` for the quick path, or `read`/`write` separately for full control
+- **Two-way sync** — Push local changes back to Google Sheets, or use `sync` to reconcile both directions with configurable conflict strategies
 
-## Get Started Now
+## Get started
 
-Ready to explore **sheets-translate-to-json**? Check out our [Documentation](/docs/Getting%20Started/installation) to get started!
+Ready to use **sheets-translate-to-json**? Check out the [Installation guide](/docs/getting-started/installation).
+
+## Contributing
+
+We welcome contributions! See the [GitHub repository](https://github.com/josephjoberno/sheets-translate-to-json) for details.
+
+1. Fork the project
+2. Create a feature branch
+3. Make your changes and add tests
+4. Submit a Pull Request

@@ -1,0 +1,11 @@
+{
+  "title": {
+    "message": "sheets-translate-to-json"
+  },
+  "item.label.Docs": {
+    "message": "Documentation"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub"
+  }
+}

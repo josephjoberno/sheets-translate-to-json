@@ -1,4 +1,143 @@
 {
   "login": "login",
-  "signup": "signup"
+  "signup": "signup",
+  "professional": "professional",
+  "influencer": {
+    "title": "Our Influencers",
+    "subtitle": "Influencer reviews. Inform, entertain and inspire."
+  },
+  "all": "all",
+  "about": {
+    "title": "Who are we?",
+    "description": "CreaticsHub connects influencers with brands, creatives, and entrepreneurs to spark authentic, high-impact collaborations.\nWe empower your marketing by turning influencer reach into real results—driving visibility, engagement, and trust for your products and services."
+  },
+  "categories": {
+    "description": "Find influencers in various categories to perfectly match your industry."
+  },
+  "services": {
+    "title": "What we offer",
+    "content_ideas": "We help generate creative concepts that resonate with your target audience.",
+    "campaign_management": "We ensure smooth coordination between brands and influencers for successful campaigns.",
+    "performance_analysis": "Track the impact of your collaborations with detailed reports.",
+    "pay_influencers_title": "Paying your influencers has never been easier!",
+    "pay_influencers_description": "Compensate your content creators and affiliates with just one click. Automate commission calculations and payment requests. Connect your PayPal account and make payments easily, quickly, and regularly.",
+    "content_ideas_title": "Content ideas",
+    "campaign_management_title": "Campaign management",
+    "performance_analysis_title": "Track the impact of your collaborations with detailed reports"
+  },
+  "marketing": {
+    "boost_audience": "Win the hearts and minds of your audience with influencers.",
+    "optimize_socials": "Optimize your social media efforts for increased impact.",
+    "promote_product": "Promote your product and brand: Increase your visibility through strategic partnerships.",
+    "grow_business": "Develop and scale your business: Reach new markets and audiences through targeted collaborations.",
+    "successful_campaigns": "Run successful social media campaigns: Benefit from our expertise to maximize engagement and ROI.",
+    "boost_audience_title": "Paying your influencers has never been easier!"
+  },
+  "influencers": {
+    "best": "Our best influencers",
+    "description": "Discover our selection of top influencers ready to collaborate and bring your projects to life."
+  },
+  "why": {
+    "choose_us": "Why choose us",
+    "description": "Maximize your social media impact with CreaticsHub."
+  },
+  "why_reasons": {
+    "connections_title": "Personalized connections",
+    "connections": "Find influencers who truly share your brand’s values and reach your target audience.",
+    "expertise": "From concept creation to execution, we offer full support for your influencer campaigns.",
+    "expertise_title": "Campaign expertise",
+    "data_driven_title": "Data-driven results",
+    "data_driven": "Analyze the success of each campaign with detailed performance reports.",
+    "time_saving_title": "Time-saving solutions",
+    "time_saving": "Save hours of work by using our streamlined platform to find and manage your collaborations."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions (FAQ)",
+    "what_is_creaticshub": "What is CreaticsHub?",
+    "what_is_creaticshub_answer": "CreaticsHub is a platform that connects influencers with marketing agencies, artists, and entrepreneurs. Our goal is to facilitate effective collaborations to promote products and services using the power of social media.",
+    "description": "the most important faqs"
+  },
+  "our_teams": {
+    "descriptiion": "Meet the passionate team working to make CreaticsHub a success. Each of our members brings expertise, creativity, and dedication to provide solutions tailored to your needs."
+  },
+  "our_process": {
+    "description": "At CreaticsHub, we are committed to making the process of connecting brands and influencers simple and effective. Our approach is based on three key principles: Personalized Connections, Simplified Campaign Management, and Data-Driven Analytics."
+  },
+  "join_us": {
+    "description": "Whether you are a brand looking to increase its visibility or an influencer seeking to collaborate with renowned companies, CreaticsHub is your trusted partner to achieve your goals."
+  },
+  "why_choose_us": {
+    "description": "Our team has in-depth knowledge of influencer marketing and current market trends. Intuitive Platform: Enjoy a user-friendly interface designed to simplify every step of your collaboration with influencers. Dedicated Support: We offer personalized assistance to meet your specific needs and ensure the success of your campaigns."
+  },
+  "what_we_offer": {
+    "description": "Access a vast network of qualified influencers in various sectors to find the ideal partner for your brand. Campaign Management: Benefit from integrated tools to plan, execute, and track your marketing campaigns with transparency. In-Depth Analytics: Get detailed reports on your campaign performance to measure ROI and refine your strategies."
+  },
+  "client": "Clients",
+  "completed_jobs": "Completed Jobs",
+  "landing": {
+    "hero_title_1": "Looking for influencers?",
+    "hero_title_2": "Discover our influencers",
+    "influencers_helping_you": "Influencers can help you grow your brand globally",
+    "influencers_helping_subtitle": "Rejoignez un réseau exclusif d'influenceurs et boostez la portée de votre marque de manière innovante et créative"
+  },
+  "search": "Search",
+  "task": {
+    "done": "Completed jobs"
+  },
+  "button": {
+    "read_more": "Read more"
+  },
+  "our_experience_subtitle": "Our Experience",
+  "our_experience_title": "Boost your brand with our influencers",
+  "our_experience_description": "We connect businesses with trusted influencers to increase visibility, drive authentic engagement, and maximize impact across social media",
+  "our_experience_t1": "Projects completed",
+  "our_experience_t2": "Satisfaction rate",
+  "our_experience_t3": "Partner influencers",
+  "faq_q1_title": "What is your company’s mission?",
+  "faq_q1_response": "Our mission is to connect creative talent with sustainable economic opportunities",
+  "faq_q2_title": "What services do you offer?",
+  "faq_q2_response": "We offer a collaborative platform for promoting products and services via social networks",
+  "faq_q3_title": "How does your platform work?",
+  "faq_q3_response": "Users register, create a profile and access paid collaboration campaigns",
+  "faq_q4_title": "What sets you apart from competitors?",
+  "faq_q4_response": "We rely on the authenticity of our creators and intelligent matchmaking technology.",
+  "welcome": "Welcome",
+  "export": "Export",
+  "saved": "Saved",
+  "total_deposit": "Total deposit",
+  "total_hiring": "Total hiring",
+  "terminate": "Terminate",
+  "pending": "Pending",
+  "suspended": "Suspended",
+  "see_more": "See more",
+  "details": "Details",
+  "reviews": "Reviews",
+  "chat": "Chat",
+  "delete": "Delete",
+  "approved_influencer": "Approved Influencer",
+  "declined_influencer": "Declined Influencer",
+  "filters": {
+    "filter_by": "Filter by",
+    "from": "From",
+    "to": "To",
+    "last_3_days": "Last 3 days",
+    "last_28_days": "Last 28 days",
+    "a_week": "A week",
+    "a_month": "A month",
+    "weekly": "Weekly",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "clear": "Clear"
+  },
+  "tables": {
+    "name": "Name",
+    "title": "Title",
+    "amount": "amount",
+    "account": "Account",
+    "details": "Details",
+    "cancel": "Cancel"
+  },
+  "transaction_growth": "Transaction Growth",
+  "recent_dialog": "Recent Dialog",
+  "our_service": "Our Service"
 }

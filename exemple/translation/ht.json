@@ -1,5 +1,120 @@
 {
   "login": "konekte",
   "signup": "enskri",
-  "professional": "pwofesyonèl"
+  "professional": "pwofesyonèl",
+  "influencer": {
+    "title": "Enfliyansè nou yo",
+    "subtitle": "Gade enfliyanse yo. Enfòme, amize ak enspire."
+  },
+  "all": "tout",
+  "about": {
+    "title": "Kiyès nou ye?",
+    "description": "CreaticsHub konekte moun k ap enfliyanse yo ak mak, kreyatif, ak antreprenè pou pwovoke kolaborasyon natif natal ki gen gwo enpak.\nNou otorize maketing ou a lè w fè enfliyans moun k ap dirije yo an rezilta reyèl—kondwi vizibilite, angajman, ak konfyans pou pwodwi ak sèvis ou yo."
+  },
+  "categories": {
+    "description": "Jwenn enfliyansè nan divès kategori pou parfe matche ak endistri ou."
+  },
+  "services": {
+    "title": "Sa nou ofri",
+    "content_ideas": "Nou ede jenere konsèp kreyatif ki rezone ak odyans sib ou.",
+    "campaign_management": "Nou asire kowòdinasyon lis ant mak ak enfliyansè pou kanpay siksè.",
+    "performance_analysis": "Swiv enpak kolaborasyon ou yo ak rapò detaye.",
+    "pay_influencers_title": "Peye enfliyansè ou yo pa janm te pi fasil!",
+    "pay_influencers_description": "Konpanse kreyatè kontni ou yo ak afilye yo ak yon sèl klike sou. Otomatik kalkil komisyon ak demann peman. Konekte kont PayPal ou a epi fè peman fasil, rapid, ak regilyèman.",
+    "content_ideas_title": "Lide kontni",
+    "campaign_management_title": "Jesyon kanpay",
+    "performance_analysis_title": "Swiv enpak kolaborasyon ou yo ak rapò detaye"
+  },
+  "marketing": {
+    "boost_audience": "Genyen kè ak lespri odyans ou a ak enfliyansè.",
+    "optimize_socials": "Optimize efò medya sosyal ou yo pou ogmante enpak.",
+    "promote_product": "Ankouraje pwodwi ou ak mak ou: Ogmante vizibilite ou atravè patenarya estratejik.",
+    "grow_business": "Devlope ak echèl biznis ou: rive jwenn nouvo mache ak odyans atravè kolaborasyon vize.",
+    "successful_campaigns": "Fè kanpay siksè medya sosyal: Benefisye de ekspètiz nou an pou maksimize angajman ak ROI.",
+    "boost_audience_title": "Peye enfliyansè ou yo pa janm te pi fasil!"
+  },
+  "influencers": {
+    "best": "Pi bon enfliyans nou yo",
+    "description": "Dekouvri seleksyon nou an nan pi gwo enfliyansè ki pare pou kolabore epi pote pwojè ou yo bay lavi."
+  },
+  "why": {
+    "choose_us": "Poukisa chwazi nou",
+    "description": "Maksimize enpak medya sosyal ou ak CreaticsHub."
+  },
+  "why_reasons": {
+    "connections_title": "Koneksyon pèsonalize",
+    "connections": "Jwenn enfliyansè ki vrèman pataje valè mak ou a epi ki rive jwenn odyans sib ou.",
+    "expertise": "Soti nan kreyasyon konsèp rive nan egzekisyon, nou ofri tout sipò pou kanpay enfliyans ou yo.",
+    "expertise_title": "Ekspètiz nan kanpay",
+    "data_driven_title": "Done-kondwi rezilta yo",
+    "data_driven": "Analize siksè chak kanpay ak rapò pèfòmans detaye.",
+    "time_saving_title": "Solisyon pou ekonomize tan",
+    "time_saving": "Ekonomize èdtan travay lè w sèvi ak platfòm rasyonalize nou an pou jwenn ak jere kolaborasyon ou yo."
+  },
+  "faq": {
+    "title": "Kesyon yo poze souvan (FAQ)",
+    "what_is_creaticshub": "Ki sa ki CreaticsHub?",
+    "what_is_creaticshub_answer": "CreaticsHub se yon platfòm ki konekte moun ki gen enfliyans ak ajans maketing, atis, ak antreprenè. Objektif nou se fasilite kolaborasyon efikas pou ankouraje pwodwi ak sèvis lè l sèvi avèk pouvwa medya sosyal yo.",
+    "description": "kesyon ki pi enpòtan yo"
+  },
+  "our_teams": {
+    "descriptiion": "Rankontre ekip pasyone k ap travay pou fè CreaticsHub yon siksè. Chak manm nou yo pote ekspètiz, kreyativite, ak devouman pou bay solisyon ki adapte a bezwen ou yo."
+  },
+  "our_process": {
+    "description": "Avèk CreaticsHub, nou ede'w konekte Mak ou a avèk enfliyansè kap ede biznis ou an grandi. Apwòch nou an baze sou twa prensip kle: Koneksyon pèsonalize, Jesyon kanpay senplifye, ak Analytics ki baze sou done."
+  },
+  "join_us": {
+    "description": "Kit ou se yon mak k ap chèche ogmante vizibilite li oswa yon enfliyans k ap chèche kolabore ak konpayi ki renome, CreaticsHub se patnè ou fè konfyans pou reyalize objektif ou yo."
+  },
+  "why_choose_us": {
+    "description": "Ekip nou an gen konesans apwofondi sou maketing influencer ak tandans aktyèl mache yo. Platfòm entwisyon: Jwi yon koòdone fasil pou itilizatè ki fèt pou senplifye chak etap nan kolaborasyon ou ak enfliyan. Sipò devwe: Nou ofri asistans pèsonalize pou satisfè bezwen espesifik ou yo epi asire siksè kanpay ou yo."
+  },
+  "what_we_offer": {
+    "description": "Aksede yon gwo rezo enfliyansè ki kalifye nan divès sektè pou jwenn patnè ideyal la pou mak ou a. Jesyon Kanpay: Benefisye de zouti entegre pou planifye, egzekite, epi swiv kanpay maketing ou yo ak transparans. Analiz apwofondi: Jwenn rapò detaye sou pèfòmans kanpay ou a pou mezire ROI ak rafine estrateji ou yo."
+  },
+  "client": "Kliyan yo",
+  "completed_jobs": "Travay Konplete",
+  "landing": {
+    "hero_title_1": "wap chache pou enfliyansè?",
+    "hero_title_2": "Dekouvri enfliyansè nou yo",
+    "influencers_helping_subtitle": "Antre nan yon rezo eksklizif nan enfliyansè ak ranfòse rive mak ou a nan fason inovatè ak kreyatif"
+  },
+  "search": "Rechèch",
+  "task": {
+    "done": "Travay ranpli"
+  },
+  "button": {
+    "read_more": "Li plis"
+  },
+  "our_experience_subtitle": "Eksperyans nou",
+  "our_experience_title": "Ranfòse mak ou ak influencers nou yo",
+  "our_experience_description": "Nou konekte biznis ak moun ki fè konfyans yo pou ogmante vizibilite, ankouraje angajman natif natal, ak maksimize enpak atravè rezo sosyal yo.",
+  "our_experience_t1": "Pwojè fini",
+  "our_experience_t2": "Pousantaj satisfaksyon",
+  "our_experience_t3": "Enfliyantè patnè yo",
+  "faq_q1_title": "Ki misyon konpayi ou a?",
+  "faq_q1_response": "Misyon nou se konekte talan kreyatif ak opòtinite ekonomik dirab",
+  "faq_q2_title": "Ki sèvis ou ofri?",
+  "faq_q2_response": "Nou ofri yon platfòm kolaborasyon pou fè pwomosyon pwodwi ak sèvis atravè rezo sosyal yo",
+  "faq_q3_title": "Ki jan platfòm ou a travay?",
+  "faq_q3_response": "Itilizatè yo anrejistre, kreye yon pwofil epi jwenn aksè nan kanpay kolaborasyon peye",
+  "faq_q4_title": "Ki sa ki fè ou apa de konpetitè yo?",
+  "faq_q4_response": "Nou konte sou otantisite kreyatè nou yo ak teknoloji entèlijan matchmaking.",
+  "welcome": "Byenvini",
+  "export": "Ekspòtasyon",
+  "filters": {
+    "filter_by": "Filtre pa",
+    "from": "Soti nan",
+    "to": "Pou",
+    "last_3_days": "3 dènye jou",
+    "last_28_days": "28 dènye jou",
+    "a_week": "Yon semèn",
+    "a_month": "Yon mwa",
+    "clear": "Klè"
+  },
+  "tables": {
+    "name": "Non",
+    "title": "Tit"
+  },
+  "our_service": "Sèvis nou yo"
 }
